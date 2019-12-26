@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{room.name}}</title>
+    <script src="/webjars/jquery/dist/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+</head>
+<body>
+{{room.name}}
+
+<script>
+    $(function () {
+        var sock = new SockJS("http://localhost:8081/stomp-chat");
+        var client = Stomp.over(sock);
+        client.connect({}, function () {
+            client.send('/app/chat/join', {}, JSON.stringify({idx: 1, name: 'member'}));
+        });
+    });
+</script>
+</body>
+</html>
