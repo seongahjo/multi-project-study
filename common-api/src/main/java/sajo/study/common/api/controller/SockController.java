@@ -16,5 +16,6 @@ public class SockController {
     @MessageMapping("/chat/join")
     public void join(ChatRoom room) {
         log.info("room {}", room.getName());
+        template.convertAndSend("/topic/room/" + room.getName(), room);
     }
 }

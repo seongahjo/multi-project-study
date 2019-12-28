@@ -1,20 +1,21 @@
 package sajo.study.common.core.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import java.time.LocalDate;
 
-@Entity
 @Data
+@EqualsAndHashCode(of={"idx","name"})
 public class ChatRoom {
-    @Id
-    @GeneratedValue
     private Long idx;
     private String name;
+    @JsonIgnore
     private LocalDate createdAt;
+
+    public ChatRoom() {
+    }
 
     public ChatRoom(String name) {
         this.name = name;
