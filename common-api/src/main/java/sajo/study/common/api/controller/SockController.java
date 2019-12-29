@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-import sajo.study.common.core.model.ChatRoom;
+import sajo.study.common.core.dto.ChatRoom;
 
 @Controller
 @Slf4j

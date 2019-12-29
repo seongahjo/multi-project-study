@@ -19,7 +19,7 @@ import org.springframework.web.socket.sockjs.client.SockJsClient;
 import org.springframework.web.socket.sockjs.client.Transport;
 import org.springframework.web.socket.sockjs.client.WebSocketTransport;
 import sajo.study.common.api.configuration.WebSocketConfig;
-import sajo.study.common.core.model.ChatRoom;
+import sajo.study.common.core.dto.ChatRoom;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;

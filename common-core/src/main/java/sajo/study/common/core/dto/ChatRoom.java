@@ -1,4 +1,4 @@
-package sajo.study.common.core.model;
+package sajo.study.common.core.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
