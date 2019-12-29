@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-import sajo.study.common.core.dto.ChatRoom;
+import sajo.study.common.core.dto.ChatRoomDTO;
 
 @Controller
 @Slf4j
@@ -14,7 +14,7 @@ public class SockController {
     private final SimpMessagingTemplate template;
 
     @MessageMapping("/chat/join")
-    public void join(ChatRoom room) {
+    public void join(ChatRoomDTO room) {
         log.info("room {}", room.getName());
         template.convertAndSend("/topic/room/" + room.getName(), room);
     }

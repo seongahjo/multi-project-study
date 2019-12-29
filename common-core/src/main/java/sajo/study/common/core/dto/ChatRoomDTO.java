@@ -8,16 +8,16 @@ import java.time.LocalDate;
 
 @Data
 @EqualsAndHashCode(of={"idx","name"})
-public class ChatRoom {
+public class ChatRoomDTO {
     private Long idx;
     private String name;
     @JsonIgnore
     private LocalDate createdAt;
 
-    public ChatRoom() {
+    public ChatRoomDTO() {
     }
 
-    public ChatRoom(String name) {
+    public ChatRoomDTO(String name) {
         this.name = name;
         this.createdAt = LocalDate.now();
     }

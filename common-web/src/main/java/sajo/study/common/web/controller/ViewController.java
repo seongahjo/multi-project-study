@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import sajo.study.common.core.dto.ChatRoom;
+import sajo.study.common.core.dto.ChatRoomDTO;
 
 @Controller
 @Slf4j
@@ -12,7 +12,7 @@ public class ViewController {
     @GetMapping("/")
     public String main(Model model) {
         log.info("GET /");
-        model.addAttribute("room",new ChatRoom("sajo"));
+        model.addAttribute("room",new ChatRoomDTO("sajo"));
         return "index";
     }
 }

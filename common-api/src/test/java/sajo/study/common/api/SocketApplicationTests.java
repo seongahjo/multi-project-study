@@ -19,7 +19,7 @@ import org.springframework.web.socket.sockjs.client.SockJsClient;
 import org.springframework.web.socket.sockjs.client.Transport;
 import org.springframework.web.socket.sockjs.client.WebSocketTransport;
 import sajo.study.common.api.configuration.WebSocketConfig;
-import sajo.study.common.core.dto.ChatRoom;
+import sajo.study.common.core.dto.ChatRoomDTO;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -56,12 +56,12 @@ public class SocketApplicationTests {
 
     @Test
     public void 방에_접속() throws InterruptedException, ExecutionException, TimeoutException {
-        ChatRoom room = new ChatRoom("NAME");
+        ChatRoomDTO room = new ChatRoomDTO("NAME");
         CountDownLatch latch = new CountDownLatch(1);
         stompSession.subscribe("/topic/room/"+room.getName(),new StompFrameHandler(){
             @Override
             public Type getPayloadType(StompHeaders headers) {
-                return ChatRoom.class;
+                return ChatRoomDTO.class;
             }
 
             @Override
