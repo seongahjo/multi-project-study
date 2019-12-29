@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public abstract class BaseEntity implements Serializable {
+abstract class BaseEntity implements Serializable {
     @CreatedDate
     private LocalDateTime createdAt;
     @LastModifiedDate
