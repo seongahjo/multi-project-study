@@ -7,4 +7,5 @@ bootJar {
 
 dependencies{
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    compile 'org.modelmapper:modelmapper:2.3.0'
 }
