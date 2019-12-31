@@ -12,7 +12,7 @@
 
 <script>
     $(function () {
-        var sock = new SockJS("http://localhost:8081/stomp-chat");
+        var sock = new SockJS("ws://localhost:8081/stomp-chat");
         var client = Stomp.over(sock);
         client.connect({}, function () {
             client.send('/app/chat/join', {}, JSON.stringify({idx: 1, name: 'member'}));
