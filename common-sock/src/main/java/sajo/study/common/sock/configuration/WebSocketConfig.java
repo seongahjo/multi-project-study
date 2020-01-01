@@ -1,4 +1,4 @@
-package sajo.study.common.api.configuration;
+package sajo.study.common.sock.configuration;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;

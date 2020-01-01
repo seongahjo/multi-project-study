@@ -1,4 +1,4 @@
-package sajo.study.common.api.controller;
+package sajo.study.common.sock.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

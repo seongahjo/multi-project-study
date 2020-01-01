@@ -49,6 +49,6 @@ repositories {
 
 dependencies {
     compile project(':common-core')
-    compile project(':common-api')
+    compile project(':common-sock')
     compile project(':common-web')
 }

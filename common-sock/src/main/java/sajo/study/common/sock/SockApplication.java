@@ -1,4 +1,4 @@
-package sajo.study.common.api;
+package sajo.study.common.sock;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

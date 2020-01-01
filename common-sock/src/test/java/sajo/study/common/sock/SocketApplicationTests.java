@@ -1,4 +1,4 @@
-package sajo.study.common.api;
+package sajo.study.common.sock;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
@@ -18,15 +18,13 @@ import org.springframework.web.socket.messaging.WebSocketStompClient;
 import org.springframework.web.socket.sockjs.client.SockJsClient;
 import org.springframework.web.socket.sockjs.client.Transport;
 import org.springframework.web.socket.sockjs.client.WebSocketTransport;
-import sajo.study.common.api.configuration.WebSocketConfig;
 import sajo.study.common.core.dto.ChatRoomDTO;
+import sajo.study.common.sock.configuration.WebSocketConfig;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.junit.Assert.assertEquals;
@@ -45,7 +43,7 @@ public class SocketApplicationTests {
     public void 연결() throws Exception {
         stompClient = new WebSocketStompClient(new SockJsClient(createTransportClient()));
         stompClient.setMessageConverter(new MappingJackson2MessageConverter());
-        stompSession = stompClient.connect("ws://localhost:"+port+"/stomp-chat", new StompSessionHandlerAdapter() {
+        stompSession = stompClient.connect("ws://localhost:" + port + "/stomp-chat", new StompSessionHandlerAdapter() {
             @Override
             public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
                 log.info(session.getSessionId());
@@ -55,10 +53,10 @@ public class SocketApplicationTests {
     }
 
     @Test
-    public void 방에_접속() throws InterruptedException, ExecutionException, TimeoutException {
+    public void 방에_접속() throws InterruptedException {
         ChatRoomDTO room = new ChatRoomDTO("NAME");
         CountDownLatch latch = new CountDownLatch(1);
-        stompSession.subscribe("/topic/room/"+room.getName(),new StompFrameHandler(){
+        stompSession.subscribe("/topic/room/" + room.getName(), new StompFrameHandler() {
             @Override
             public Type getPayloadType(StompHeaders headers) {
                 return ChatRoomDTO.class;
