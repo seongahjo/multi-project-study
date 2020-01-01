@@ -1,24 +1,26 @@
 package sajo.study.common.core.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
-import java.time.LocalDate;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
+@Entity
 @Data
-@EqualsAndHashCode(of={"idx","name"})
-public class ChatRoom {
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = false)
+@ToString(callSuper = true)
+public class ChatRoom extends BaseEntity{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
-    private String name;
-    @JsonIgnore
-    private LocalDate createdAt;
 
-    public ChatRoom() {
-    }
+    private String name;
 
     public ChatRoom(String name) {
         this.name = name;
-        this.createdAt = LocalDate.now();
     }
 }

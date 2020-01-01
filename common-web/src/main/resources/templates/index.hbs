@@ -9,13 +9,22 @@
 </head>
 <body>
 {{room.name}}
+<div id="chatRoom">
 
+</div>
 <script>
     $(function () {
-        var sock = new SockJS("http://localhost:8081/stomp-chat");
-        var client = Stomp.over(sock);
+        let sock = new SockJS("http://localhost:8081/stomp-chat");
+        let client = Stomp.over(sock);
+        let name = '{{room.name}}';
         client.connect({}, function () {
             client.send('/app/chat/join', {}, JSON.stringify({idx: 1, name: 'member'}));
+            client.send(`/app/chat/${name}/message`,{}, JSON.stringify({from : 'test', message: 'message'}));
+            client.subscribe(`/topic/chat/${name}/message`,(message)=>{
+                console.log(message.body);
+                message = JSON.parse(message.body);
+                $("#chatRoom").append(`<p>${message.message}</p>`)
+            });
         });
     });
 </script>

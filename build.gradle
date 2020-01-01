@@ -31,8 +31,8 @@ allprojects {
     dependencies {
         implementation 'org.springframework.boot:spring-boot-starter-web'
         developmentOnly 'org.springframework.boot:spring-boot-devtools'
-        runtimeOnly 'com.h2database:h2'
-        compileOnly 'org.projectlombok:lombok:1.16.20'
+        implementation 'com.h2database:h2'
+        implementation 'org.projectlombok:lombok:1.16.20'
         annotationProcessor 'org.projectlombok:lombok:1.16.20'
         testImplementation('org.springframework.boot:spring-boot-starter-test') {
             exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
@@ -49,6 +49,6 @@ repositories {
 
 dependencies {
     compile project(':common-core')
-    compile project(':common-api')
+    compile project(':common-sock')
     compile project(':common-web')
 }
