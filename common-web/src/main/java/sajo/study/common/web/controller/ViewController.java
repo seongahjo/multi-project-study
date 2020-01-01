@@ -5,8 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import sajo.study.common.core.dto.ChatRoomDTO;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import sajo.study.common.web.service.ChatRoomService;
 
 @Controller
@@ -18,12 +20,6 @@ public class ViewController {
     @GetMapping("/room/{id}")
     public String main(@PathVariable Long id, Model model) {
         model.addAttribute("room", chatRoomService.findOne(id));
-        return "index";
-    }
-
-    @PostMapping("/room/{id}")
-    public String create(@PathVariable Long id, @RequestBody ChatRoomDTO dto, Model model) {
-        model.addAttribute("room", chatRoomService.save(dto));
         return "index";
     }
 
