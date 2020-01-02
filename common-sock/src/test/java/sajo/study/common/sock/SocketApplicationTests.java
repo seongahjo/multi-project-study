@@ -31,6 +31,7 @@ import java.util.concurrent.TimeoutException;
 
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.assertj.core.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
@@ -70,7 +71,7 @@ public class SocketApplicationTests {
                 latch.countDown();
             }
         });
-        latch.await(1,MINUTES);
+        if(!latch.await(1, MINUTES)) fail("not end");
     }
 
     @Test
@@ -86,7 +87,7 @@ public class SocketApplicationTests {
                 latch.countDown();
             }
         });
-        latch.await(1, MINUTES);
+        if(!latch.await(1, MINUTES)) fail("not end");
     }
 
     private abstract static class StompFrameTestHandler<T extends BaseDTO> implements StompFrameHandler {
