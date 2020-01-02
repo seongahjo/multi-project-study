@@ -16,7 +16,7 @@ import sajo.study.common.core.dto.MessageDTO;
 public class SockController {
 
 	@MessageMapping("/chat/{name}/join")
-	@SendTo("/chat/{name}/join")
+	@SendTo("/topic/chat/{name}/join")
 	public ChatRoomDTO join(ChatRoomDTO room, @DestinationVariable String name) {
 		log.info("JOIN ROOM {}", room.getName());
 		return room;
