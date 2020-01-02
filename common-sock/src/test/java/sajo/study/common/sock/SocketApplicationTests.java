@@ -59,9 +59,9 @@ public class SocketApplicationTests {
     public void 방에_접속() throws InterruptedException {
         assertNotNull(stompSession);
         ChatRoomDTO room = new ChatRoomDTO("NAME");
-        stompSession.send("/app/chat/join", room);
+        stompSession.send("/app/chat/"+room.getName()+"/join", room);
         CountDownLatch latch = new CountDownLatch(1);
-        stompSession.subscribe("/topic/chat/" + room.getName(), new StompFrameHandler() {
+        stompSession.subscribe("/topic/chat/"+room.getName()+"/join", new StompFrameHandler() {
             @Override
             public Type getPayloadType(StompHeaders headers) {
                 return ChatRoomDTO.class;
