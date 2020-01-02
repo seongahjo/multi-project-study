@@ -29,6 +29,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
+import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -69,7 +70,7 @@ public class SocketApplicationTests {
                 latch.countDown();
             }
         });
-        latch.await();
+        latch.await(1,MINUTES);
     }
 
     @Test
@@ -85,7 +86,7 @@ public class SocketApplicationTests {
                 latch.countDown();
             }
         });
-        latch.await();
+        latch.await(1, MINUTES);
     }
 
     private abstract static class StompFrameTestHandler<T extends BaseDTO> implements StompFrameHandler {
