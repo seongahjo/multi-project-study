@@ -33,6 +33,7 @@ import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -56,6 +57,7 @@ public class SocketApplicationTests {
 
     @Test
     public void 방에_접속() throws InterruptedException {
+        assertNotNull(stompSession);
         ChatRoomDTO room = new ChatRoomDTO("NAME");
         stompSession.send("/app/chat/join", room);
         CountDownLatch latch = new CountDownLatch(1);
@@ -76,6 +78,7 @@ public class SocketApplicationTests {
 
     @Test
     public void 메세지_전송() throws InterruptedException {
+        assertNotNull(stompSession);
         CountDownLatch latch = new CountDownLatch(1);
         ChatRoomDTO room = new ChatRoomDTO("MESSAGE_SNED");
         MessageDTO message = new MessageDTO("from", "message");
