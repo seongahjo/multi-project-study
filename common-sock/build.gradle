@@ -6,6 +6,10 @@ bootJar {
     enabled = false
 }
 
+test {
+    testLogging.showStandardStreams = true
+}
+
 dependencies{
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
     compile project(':common-core')
