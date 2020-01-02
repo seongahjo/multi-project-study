@@ -1,5 +1,6 @@
 package sajo.study.common.sock;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,6 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Import(WebSocketConfig.class)
+@Slf4j
 public class SocketApplicationTests {
     @Value("${local.server.port}")
     private int port;
@@ -69,6 +71,7 @@ public class SocketApplicationTests {
 
             @Override
             public void handleFrame(StompHeaders headers, Object payload) {
+                log.info("방에 접속 안에");
                 assertEquals(room, payload);
                 latch.countDown();
             }
@@ -86,6 +89,7 @@ public class SocketApplicationTests {
         stompSession.subscribe("/topic/chat/" + room.getName() + "/message", new StompFrameTestHandler<MessageDTO>(MessageDTO.class) {
             @Override
             public void handleFrame(StompHeaders headers, MessageDTO payload) {
+                log.info("메세지 전송 안에");
                 assertEquals(message, payload);
                 latch.countDown();
             }
