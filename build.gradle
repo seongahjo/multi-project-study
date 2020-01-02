@@ -1,6 +1,6 @@
 
-plugins{
-    id 'org.springframework.boot' version '2.0.4.RELEASE'
+plugins {
+    id 'org.springframework.boot' version '2.2.0.RELEASE'
 }
 
 allprojects {
@@ -46,6 +46,15 @@ allprojects {
 repositories {
     mavenCentral()
 }
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = false
+}
+
 
 dependencies {
     compile project(':common-core')
