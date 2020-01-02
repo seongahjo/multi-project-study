@@ -1,25 +1,23 @@
 package sajo.study.common.core;
 
-import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import sajo.study.common.core.dto.ChatRoomDTO;
 import sajo.study.common.core.model.ChatRoom;
 import sajo.study.common.core.model.UserLog;
 import sajo.study.common.core.repository.ChatRoomRepository;
 import sajo.study.common.core.repository.UserLogRepository;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static sajo.study.common.core.util.ModelMapperUtils.map;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @DataJpaTest
-@Slf4j
-@AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class JpaTest {
     @Autowired
     private ChatRoomRepository chatRoomRepository;
@@ -43,7 +41,6 @@ public class JpaTest {
         UserLog u = new UserLog(room);
         u.setRoom(room);
         UserLog saved = userLogRepository.save(u);
-        assertEquals(u,saved);
-        log.info(saved.toString());
+        assertEquals(u, saved);
     }
 }
