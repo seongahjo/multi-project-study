@@ -61,7 +61,6 @@ public class SocketApplicationTests {
     public void 방에_접속() throws InterruptedException {
         assertNotNull(stompSession);
         ChatRoomDTO room = new ChatRoomDTO("NAME");
-        stompSession.send("/app/chat/"+room.getName()+"/join", room);
         CountDownLatch latch = new CountDownLatch(1);
         stompSession.subscribe("/topic/chat/"+room.getName()+"/join", new StompFrameHandler() {
             @Override
@@ -76,6 +75,7 @@ public class SocketApplicationTests {
                 latch.countDown();
             }
         });
+        stompSession.send("/app/chat/"+room.getName()+"/join", room);
         if(!latch.await(1, MINUTES)) fail("not end");
     }
 
@@ -85,7 +85,6 @@ public class SocketApplicationTests {
         CountDownLatch latch = new CountDownLatch(1);
         ChatRoomDTO room = new ChatRoomDTO("MESSAGE_SNED");
         MessageDTO message = new MessageDTO("from", "message");
-        stompSession.send("/app/chat/" + room.getName() + "/message", message);
         stompSession.subscribe("/topic/chat/" + room.getName() + "/message", new StompFrameTestHandler<MessageDTO>(MessageDTO.class) {
             @Override
             public void handleFrame(StompHeaders headers, MessageDTO payload) {
@@ -94,6 +93,8 @@ public class SocketApplicationTests {
                 latch.countDown();
             }
         });
+        stompSession.send("/app/chat/" + room.getName() + "/message", message);
+
         if(!latch.await(1, MINUTES)) fail("not end");
     }
 
