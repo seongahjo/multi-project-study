@@ -18,7 +18,7 @@
         let client = Stomp.over(sock);
         let name = '{{room.name}}';
         client.connect({}, function () {
-            client.send('/app/chat/join', {}, JSON.stringify({idx: 1, name: 'member'}));
+            client.send(`/app/chat/${name}/join`, {}, JSON.stringify({idx: 1, name: 'member'}));
             client.send(`/app/chat/${name}/message`,{}, JSON.stringify({from : 'test', message: 'message'}));
             client.subscribe(`/topic/chat/${name}/message`,(message)=>{
                 console.log(message.body);
