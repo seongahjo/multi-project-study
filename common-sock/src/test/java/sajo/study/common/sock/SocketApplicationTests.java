@@ -1,5 +1,6 @@
 package sajo.study.common.sock;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,89 +30,93 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
+import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.assertj.core.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Import(WebSocketConfig.class)
+@Slf4j
 public class SocketApplicationTests {
-    @Value("${local.server.port}")
-    private int port;
-    private StompSession stompSession;
+	@Value("${local.server.port}")
+	private int port;
+	private StompSession stompSession;
 
-    @BeforeEach
-    public void 연결() throws InterruptedException, ExecutionException, TimeoutException {
-        WebSocketStompClient stompClient;
-        stompClient = new WebSocketStompClient(new SockJsClient(createTransportClient()));
-        stompClient.setMessageConverter(new MappingJackson2MessageConverter());
-        stompSession = stompClient.connect("ws://localhost:" + port + "/stomp-chat", new StompSessionHandlerAdapter() {
-            @Override
-            public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
-            }
-        }).get(1, SECONDS);
-    }
+	@BeforeEach
+	public void 연결() throws InterruptedException, ExecutionException, TimeoutException {
+		WebSocketStompClient stompClient;
+		stompClient = new WebSocketStompClient(new SockJsClient(createTransportClient()));
+		stompClient.setMessageConverter(new MappingJackson2MessageConverter());
+		stompSession = stompClient.connect("ws://localhost:" + port + "/stomp-chat", new StompSessionHandlerAdapter() {
+			@Override
+			public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
+			}
+		}).get(1, SECONDS);
+	}
 
-    @Test
-    public void 방에_접속() throws InterruptedException {
-        ChatRoomDTO room = new ChatRoomDTO("NAME");
-        stompSession.send("/app/chat/join", room);
-        CountDownLatch latch = new CountDownLatch(1);
-        stompSession.subscribe("/topic/chat/" + room.getName(), new StompFrameHandler() {
-            @Override
-            public Type getPayloadType(StompHeaders headers) {
-                return ChatRoomDTO.class;
-            }
+	@Test
+	public void 방에_접속() throws InterruptedException {
+		assertNotNull(stompSession);
+		ChatRoomDTO room = new ChatRoomDTO("NAME");
+		CountDownLatch latch = new CountDownLatch(1);
+		stompSession.subscribe("/topic/chat/" + room.getName() + "/join", new StompFrameTestHandler<ChatRoomDTO>(ChatRoomDTO.class) {
+			@Override
+			public void handleFrame(StompHeaders headers, ChatRoomDTO payload) {
+				log.info("방에 접속 안에");
+				assertEquals(room, payload);
+				latch.countDown();
+			}
+		});
+		stompSession.send("/app/chat/" + room.getName() + "/join", room);
+		if (!latch.await(1, MINUTES)) fail("not end");
+	}
 
-            @Override
-            public void handleFrame(StompHeaders headers, Object payload) {
-                assertEquals(room, payload);
-                latch.countDown();
-            }
-        });
-        latch.await();
-    }
+	@Test
+	public void 메세지_전송() throws InterruptedException {
+		assertNotNull(stompSession);
+		CountDownLatch latch = new CountDownLatch(1);
+		ChatRoomDTO room = new ChatRoomDTO("MESSAGE_SNED");
+		MessageDTO message = new MessageDTO("from", "message");
+		stompSession.subscribe("/topic/chat/" + room.getName() + "/message", new StompFrameTestHandler<MessageDTO>(MessageDTO.class) {
+			@Override
+			public void handleFrame(StompHeaders headers, MessageDTO payload) {
+				log.info("메세지 전송 안에");
+				assertEquals(message, payload);
+				latch.countDown();
+			}
+		});
+		stompSession.send("/app/chat/" + room.getName() + "/message", message);
 
-    @Test
-    public void 메세지_전송() throws InterruptedException {
-        CountDownLatch latch = new CountDownLatch(1);
-        ChatRoomDTO room = new ChatRoomDTO("MESSAGE_SNED");
-        MessageDTO message = new MessageDTO("from", "message");
-        stompSession.send("/app/chat/" + room.getName() + "/message", message);
-        stompSession.subscribe("/topic/chat/" + room.getName() + "/message", new StompFrameTestHandler<MessageDTO>(MessageDTO.class) {
-            @Override
-            public void handleFrame(StompHeaders headers, MessageDTO payload) {
-                assertEquals(message, payload);
-                latch.countDown();
-            }
-        });
-        latch.await();
-    }
+		if (!latch.await(1, MINUTES)) fail("not end");
+	}
 
-    private abstract static class StompFrameTestHandler<T extends BaseDTO> implements StompFrameHandler {
-        private Class<T> clazz;
+	private abstract static class StompFrameTestHandler<T extends BaseDTO> implements StompFrameHandler {
+		private Class<T> clazz;
 
-        public StompFrameTestHandler(Class<T> clazz) {
-            this.clazz = clazz;
-        }
+		public StompFrameTestHandler(Class<T> clazz) {
+			this.clazz = clazz;
+		}
 
-        @Override
-        public Type getPayloadType(StompHeaders headers) {
-            return clazz;
-        }
+		@Override
+		public Type getPayloadType(StompHeaders headers) {
+			return clazz;
+		}
 
-        public abstract void handleFrame(StompHeaders headers, T payload);
+		public abstract void handleFrame(StompHeaders headers, T payload);
 
-        @Override
-        @SuppressWarnings("unchecked")
-        public void handleFrame(StompHeaders headers, Object payload) {
-            handleFrame(headers, (T) payload);
-        }
-    }
+		@Override
+		@SuppressWarnings("unchecked")
+		public void handleFrame(StompHeaders headers, Object payload) {
+			handleFrame(headers, (T) payload);
+		}
+	}
 
-    private List<Transport> createTransportClient() {
-        List<Transport> transports = new ArrayList<>(1);
-        transports.add(new WebSocketTransport(new StandardWebSocketClient()));
-        return transports;
-    }
+	private List<Transport> createTransportClient() {
+		List<Transport> transports = new ArrayList<>(1);
+		transports.add(new WebSocketTransport(new StandardWebSocketClient()));
+		return transports;
+	}
 }
