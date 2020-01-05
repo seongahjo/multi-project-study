@@ -21,7 +21,7 @@ public abstract class BaseApiController<T extends BaseEntity, U extends BaseDTO>
     }
 
     @PostMapping("")
-    public void save(@RequestBody U dto) {
-        service.save(dto);
+    public String save(@RequestBody U dto) {
+        return service.save(dto);
     }
 }
