@@ -1,9 +1,6 @@
 package sajo.study.common.core.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -13,15 +10,22 @@ import javax.persistence.*;
 @EqualsAndHashCode(callSuper = false)
 @ToString(callSuper = true)
 public class UserLog extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idx;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long idx;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "room_idx")
-    private ChatRoom room;
+	private String userName;
 
-    public UserLog(ChatRoom room) {
-        this.room = room;
-    }
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "room_idx")
+	private ChatRoom room;
+
+	public UserLog(ChatRoom room) {
+		this.room = room;
+	}
+
+	public UserLog(String userName, ChatRoom room) {
+		this.userName = userName;
+		this.room = room;
+	}
 }
