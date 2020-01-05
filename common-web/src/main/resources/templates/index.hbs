@@ -12,6 +12,7 @@
 <div id="chatRoom">
 
 </div>
+<div id="alarm"></div>
 <script>
     $(function () {
         let sock = new SockJS("http://localhost:8081/stomp-chat");
@@ -21,6 +22,10 @@
         client.connect({}, function () {
             client.send(`/app/chat/${idx}/join`, {}, JSON.stringify({idx: 1, name: 'member'}));
             client.send(`/app/chat/${idx}/message`,{}, JSON.stringify({from : name, message: 'message'}));
+            client.subscribe(`/topic/chat/${name}/join`,(res)=>{
+                let message = JSON.parse(res.body);
+                $("#alarm").html(`<p>${message.message}</p>`)
+            });
             client.subscribe(`/topic/chat/${idx}/message`,(res)=>{
                 let message = JSON.parse(res.body);
                 $("#chatRoom").append(`<p>${message.message}</p>`)
