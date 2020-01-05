@@ -2,6 +2,7 @@ package sajo.study.common.web.service;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import sajo.study.common.core.dto.BaseDTO;
+import sajo.study.common.core.dto.MessageDTO;
 import sajo.study.common.core.model.BaseEntity;
 
 import javax.persistence.EntityNotFoundException;
@@ -23,7 +24,7 @@ public abstract class BaseService<T extends BaseEntity, U extends BaseDTO> {
         return map(this.repository.findById(idx).orElseThrow(EntityNotFoundException::new), dto);
     }
 
-    public T save(U dto) {
-        return this.repository.save(map(dto, clazz));
+    public String save(U dto) {
+        return map(this.repository.save(map(dto, clazz)),MessageDTO.class);
     }
 }
