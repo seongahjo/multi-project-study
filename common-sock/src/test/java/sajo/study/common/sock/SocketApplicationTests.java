@@ -60,9 +60,9 @@ public class SocketApplicationTests {
 	@Test
 	public void 방에_접속() throws InterruptedException {
 		assertNotNull(stompSession);
-		ChatRoomDTO room = new ChatRoomDTO("NAME");
+		ChatRoomDTO room = new ChatRoomDTO(1L,"NAME");
 		CountDownLatch latch = new CountDownLatch(1);
-		stompSession.subscribe("/topic/chat/" + room.getName() + "/join", new StompFrameTestHandler<ChatRoomDTO>(ChatRoomDTO.class) {
+		stompSession.subscribe("/topic/chat/" + room.getIdx() + "/join", new StompFrameTestHandler<ChatRoomDTO>(ChatRoomDTO.class) {
 			@Override
 			public void handleFrame(StompHeaders headers, ChatRoomDTO payload) {
 				log.info("방에 접속 안에");
@@ -70,7 +70,7 @@ public class SocketApplicationTests {
 				latch.countDown();
 			}
 		});
-		stompSession.send("/app/chat/" + room.getName() + "/join", room);
+		stompSession.send("/app/chat/" + room.getIdx() + "/join", room);
 		if (!latch.await(1, MINUTES)) fail("not end");
 	}
 
@@ -78,9 +78,9 @@ public class SocketApplicationTests {
 	public void 메세지_전송() throws InterruptedException {
 		assertNotNull(stompSession);
 		CountDownLatch latch = new CountDownLatch(1);
-		ChatRoomDTO room = new ChatRoomDTO("MESSAGE_SNED");
+		ChatRoomDTO room = new ChatRoomDTO(1L, "MESSAGE_SNED");
 		MessageDTO message = new MessageDTO("from", "message");
-		stompSession.subscribe("/topic/chat/" + room.getName() + "/message", new StompFrameTestHandler<MessageDTO>(MessageDTO.class) {
+		stompSession.subscribe("/topic/chat/" + room.getIdx() + "/message", new StompFrameTestHandler<MessageDTO>(MessageDTO.class) {
 			@Override
 			public void handleFrame(StompHeaders headers, MessageDTO payload) {
 				log.info("메세지 전송 안에");
@@ -88,7 +88,7 @@ public class SocketApplicationTests {
 				latch.countDown();
 			}
 		});
-		stompSession.send("/app/chat/" + room.getName() + "/message", message);
+		stompSession.send("/app/chat/" + room.getIdx() + "/message", message);
 
 		if (!latch.await(1, MINUTES)) fail("not end");
 	}

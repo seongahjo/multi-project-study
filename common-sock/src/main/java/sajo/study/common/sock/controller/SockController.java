@@ -4,6 +4,7 @@ package sajo.study.common.sock.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
@@ -15,16 +16,16 @@ import sajo.study.common.core.dto.MessageDTO;
 @RequiredArgsConstructor
 public class SockController {
 
-	@MessageMapping("/chat/{name}/join")
-	@SendTo("/topic/chat/{name}/join")
-	public ChatRoomDTO join(ChatRoomDTO room, @DestinationVariable String name) {
+	@MessageMapping("/chat/{idx}/join")
+	@SendTo("/topic/chat/{idx}/join")
+	public ChatRoomDTO join(@Header("simpSessionId") String user, ChatRoomDTO room, @DestinationVariable Long idx) {
 		log.info("JOIN ROOM {}", room.getName());
 		return room;
 	}
 
-	@MessageMapping("/chat/{name}/message")
-	@SendTo("/topic/chat/{name}/message")
-	public MessageDTO message(MessageDTO message, @DestinationVariable String name) {
+	@MessageMapping("/chat/{idx}/message")
+	@SendTo("/topic/chat/{idx}/message")
+	public MessageDTO message(MessageDTO message, @DestinationVariable Long idx) {
 		log.info("MESSAGE {} ROOM {}", message.getMessage(), message.getFrom());
 		return message;
 	}
