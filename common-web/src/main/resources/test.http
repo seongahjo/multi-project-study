@@ -20,3 +20,17 @@ GET http://localhost:8080/api/room/1
 GET http://localhost:8080/api/room/2
 
 ###
+
+GET http://localhost:8080/api/userlog/1
+
+###
+
+POST http://localhost:8080/api/userlog
+Content-Type:  application/json
+
+{
+  "chatRoomIdx": 1,
+  "userName": "test"
+}
+
+###
