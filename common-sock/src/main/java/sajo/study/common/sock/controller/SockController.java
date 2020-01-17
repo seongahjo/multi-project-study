@@ -12,17 +12,19 @@ import sajo.study.common.core.dto.ChatRoomDTO;
 import sajo.study.common.core.dto.MessageDTO;
 import sajo.study.common.core.dto.UserLogDTO;
 import sajo.study.common.core.util.RestTemplateUtils;
+import sajo.study.common.core.util.SimpleTemplate;
 
 @Controller
 @Slf4j
 @RequiredArgsConstructor
 public class SockController {
+	private final SimpleTemplate simpleTemplate= new SimpleTemplate("http://localhost:8080/api/",new RestTemplateUtils());
 
 	@MessageMapping("/chat/{idx}/join")
 	@SendTo("/topic/chat/{idx}/join")
 	public String join(@Header("simpSessionId") String user, ChatRoomDTO room, @DestinationVariable Long idx) {
 		log.info("JOIN ROOM {}", room.getName());
-		return RestTemplateUtils.post("http://localhost:8080/api/userlog", new UserLogDTO(room.getIdx(), user), String.class);
+		return simpleTemplate.post("userlog", new UserLogDTO(room.getIdx(), user), String.class);
 	}
 
 	@MessageMapping("/chat/{idx}/message")
