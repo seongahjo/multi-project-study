@@ -1,9 +1,7 @@
 package sajo.study.common.web.service;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sajo.study.common.core.dto.MessageDTO;
 import sajo.study.common.core.dto.UserLogDTO;
 import sajo.study.common.core.model.ChatRoom;
 import sajo.study.common.core.model.UserLog;
@@ -28,6 +26,6 @@ public class UserLogService extends BaseService<UserLog, UserLogDTO> {
 		Long roomIdx = dto.getChatRoomIdx();
 		ChatRoom chatRoom = chatRoomRepository.findById(roomIdx).orElseThrow(EntityNotFoundException::new);
 		UserLog userLog = this.repository.save(new UserLog(dto.getUserName(), chatRoom));
-		return ModelMapperUtils.map(userLog, MessageDTO.class);
+		return ModelMapperUtils.map(userLog, String.class);
 	}
 }

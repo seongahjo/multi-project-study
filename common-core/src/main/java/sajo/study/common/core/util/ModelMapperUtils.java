@@ -2,7 +2,6 @@ package sajo.study.common.core.util;
 
 import org.modelmapper.ModelMapper;
 import sajo.study.common.core.convert.MessageMapper;
-import sajo.study.common.core.dto.MessageDTO;
 import sajo.study.common.core.model.BaseEntity;
 import sajo.study.common.core.model.ChatRoom;
 import sajo.study.common.core.model.UserLog;
@@ -15,7 +14,7 @@ public class ModelMapperUtils {
 	private ModelMapperUtils() {
 	}
 
-	public static <T extends BaseEntity> String map(T entity, Class<MessageDTO> clazz) {
+	public static <T extends BaseEntity> String map(T entity, Class<String> clazz) {
 		return MessageMapping.mapping(entity);
 	}
 
