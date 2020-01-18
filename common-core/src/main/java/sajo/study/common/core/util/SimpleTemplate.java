@@ -11,11 +11,11 @@ public class SimpleTemplate {
 	}
 
 	public <T, R> R post(String endpoint, T t, Class<R> clazz) {
-		return template.request(getAbsolutePath(endpoint), t, clazz);
+		return template.request(getAbsolutePath(endpoint), t, clazz, r -> r);
 	}
 
-	public <T> T get(String endpoint, Class<T> clazz) {
-		return template.fetch(getAbsolutePath(endpoint), clazz);
+	public <T> T get(String endpoint, Class<T> clazz) throws InterruptedException {
+		return template.fetch(getAbsolutePath(endpoint), clazz,r->r);
 	}
 
 	private String getAbsolutePath(String endpoint) {
