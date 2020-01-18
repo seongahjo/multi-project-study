@@ -18,7 +18,7 @@ import sajo.study.common.core.util.SimpleTemplate;
 @Slf4j
 @RequiredArgsConstructor
 public class SockController {
-	private final SimpleTemplate simpleTemplate= new SimpleTemplate("http://localhost:8080/api/",new RestTemplateUtils());
+	private final SimpleTemplate simpleTemplate = new SimpleTemplate("http://localhost:8080/api/", new RestTemplateUtils());
 
 	@MessageMapping("/chat/{idx}/join")
 	@SendTo("/topic/chat/{idx}/join")

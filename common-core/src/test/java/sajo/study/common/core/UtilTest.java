@@ -14,9 +14,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Slf4j
 public class UtilTest {
 
-	SimpleTemplate template = new SimpleTemplate("http://localhost:8080/api/",new RestTemplateUtils());
+	SimpleTemplate template = new SimpleTemplate("http://localhost:8080/api/", new RestTemplateUtils());
+
 	@Test
-	void RestTemplate테스트_POST() {
+	void RestTemplate테스트_POST() throws InterruptedException {
 		ChatRoom test = new ChatRoom("test");
 		String message = template.post("room", test, String.class);
 		log.info(message);
@@ -37,6 +38,7 @@ public class UtilTest {
 		String message = ModelMapperUtils.map(u, String.class);
 		assertEquals("test joins testRoom", message);
 	}
+
 	@Test
 	void messageMapping_메세지변환테스트_채팅방() {
 		ChatRoom chatRoom = new ChatRoom("testRoom");
