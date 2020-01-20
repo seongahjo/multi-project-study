@@ -14,17 +14,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Slf4j
 public class UtilTest {
 
-	SimpleTemplate template = new SimpleTemplate("http://localhost:8080/api/", new RestTemplateUtils());
-
-	@Test
-	void RestTemplate테스트_POST() throws InterruptedException {
-		ChatRoom test = new ChatRoom("test");
-		String message = template.post("room", test, String.class);
-		log.info(message);
-		ChatRoomDTO get = template.get("room/1", ChatRoomDTO.class);
-		assertEquals(ModelMapperUtils.map(test, ChatRoomDTO.class).getName(), get.getName());
-	}
-
 	@Test
 	void modelMapper_챗룸변환테스트() {
 		ChatRoom room = new ChatRoom("room");

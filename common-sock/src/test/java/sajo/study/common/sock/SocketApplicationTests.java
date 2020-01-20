@@ -33,12 +33,12 @@ public class SocketApplicationTests {
 		template = new SimpleTemplate("", new StompTemplateUtils(port));
 	}
 
-	@Test
-	public void 방에_접속() throws InterruptedException {
-		ChatRoomDTO room = new ChatRoomDTO(1L, "NAME");
-		template.post("/app/chat/" + room.getIdx() + "/join", room, ChatRoomDTO.class);
-		template.get("/topic/chat/" + room.getIdx() + "/join", ChatRoomDTO.class);
-	}
+//	@Test
+//	public void 방에_접속() throws InterruptedException {
+//		ChatRoomDTO room = new ChatRoomDTO(1L, "NAME");
+//		template.post("/app/chat/" + room.getIdx() + "/join", room, ChatRoomDTO.class);
+//		template.get("/topic/chat/" + room.getIdx() + "/join", ChatRoomDTO.class);
+//	}
 
 	@Test
 	public void 메세지_전송() throws InterruptedException {
